@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: url_shortener_db
+    environment:
+      POSTGRES_DB: urlshortener
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+    ports:
+      - '5432:5432'       # host_port:container_port
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # data persists across restarts
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U admin']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Spring Boot App ───────────────────────────────────
+  app:
+    build: .
+    container_name: url_shortener_app
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/urlshortener
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: secret
+    depends_on:
+      postgres:
+        condition: service_healthy   # wait for DB before starting app
+
+volumes:
+  pgdata:
