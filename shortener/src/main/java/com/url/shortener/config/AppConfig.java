@@ -13,7 +13,7 @@ public class AppConfig {
     private int defaultExpiryDays;
     private Jwt jwt = new Jwt();
 
-    // Getters & setters required for @ConfigurationProperties binding
+
 
     public String getBaseUrl() { return baseUrl; }
     public void setBaseUrl(String baseUrl) { this.baseUrl = baseUrl; }
@@ -27,7 +27,7 @@ public class AppConfig {
     public Jwt getJwt() { return jwt; }
     public void setJwt(Jwt jwt) { this.jwt = jwt; }
 
-    /** Nested config class for JWT settings */
+
     public static class Jwt {
         private String secret;
         private long expirationMs;

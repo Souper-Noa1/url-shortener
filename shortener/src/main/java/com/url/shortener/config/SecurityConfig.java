@@ -36,36 +36,18 @@ public class SecurityConfig {
         return http
 
                 .csrf(AbstractHttpConfigurer::disable)
-
-
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers(HttpMethod.GET, "/r/**").permitAll()
-
-
                         .requestMatchers(HttpMethod.GET, "/api/v1/urls/*/stats").permitAll()
-
-
                         .requestMatchers("/api/v1/auth/**").permitAll()
-
-
                         .requestMatchers("/internal/actuator/**").permitAll()
-
-
                         .requestMatchers("/h2-console/**").permitAll()
-
-
                         .anyRequest().authenticated()
                 )
 
-
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-
-
                 .authenticationProvider(authenticationProvider())
-
                 .build();
     }
 
@@ -75,7 +57,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(12);
     }
 
-    @Bean
+   @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
